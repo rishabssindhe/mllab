@@ -1,0 +1,11 @@
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_breast_cancer
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+cancer = load_breast_cancer()
+X, y = cancer.data, cancer.target
+clf = DecisionTreeClassifier(max_depth=3, random_state=42).fit(X, y)
+pred = clf.predict(X[:1])
+print(f"Prediction: {cancer.target_names[pred[0]]}")
+plt.figure(figsize=(12, 8))
+plot_tree(clf, feature_names=cancer.feature_names, class_names=cancer.target_names, filled=True)
+plt.show()
