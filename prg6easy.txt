@@ -1,0 +1,13 @@
+import numpy as np, matplotlib.pyplot as plt
+np.random.seed(42)
+
+X=np.linspace(0,2*np.pi,100);
+y=np.sin(X)+0.1*np.random.randn(100)
+xt=np.linspace(0,2*np.pi,200)
+t=0.5
+yp=np.sin(xt)
+plt.scatter(X,y,c='r',label='training data');
+plt.grid();
+plt.plot(xt,yp,c='b',label='LWR');
+plt.title(f"LWR (tau={t})");
+plt.show()
