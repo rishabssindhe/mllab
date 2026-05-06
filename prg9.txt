@@ -1,0 +1,24 @@
+import matplotlib.pyplot as plt
+from sklearn.datasets import fetch_olivetti_faces
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import classification_report, confusion_matrix
+faces = fetch_olivetti_faces(shuffle=True, random_state=42)
+X, y = faces.data, faces.target
+X_tr, X_ts, y_tr, y_ts = train_test_split(X, y, test_size=0.2, random_state=42)
+model = GaussianNB().fit(X_tr, y_tr)
+preds = model.predict(X_ts)
+print(f"Accuracy: {model.score(X_ts, y_ts)*100:.2f}%\n")
+print("Classification Report:\n")
+print(classification_report(y_ts, preds))
+print("Confusion Matrix:")
+print(confusion_matrix(y_ts, preds))
+cv = cross_val_score(GaussianNB(), X, y, cv=5)
+print(f"\nCross-validation accuracy: {cv.mean()*100:.2f}%")
+plt.figure(figsize=(10, 6))
+for i in range(15):
+    plt.subplot(3, 5, i+1)
+    plt.imshow(X_ts[i].reshape(64, 64), cmap='gray')
+    plt.title(f"T:{y_ts[i]} P:{preds[i]}")
+    plt.axis('off')
+plt.show()
