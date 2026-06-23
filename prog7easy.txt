@@ -1,0 +1,41 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import fetch_california_housing
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import mean_squared_error,r2_score
+
+d=fetch_california_housing(as_frame=True).frame
+X,y=d[['AveRooms']],d['MedHouseVal']
+
+m=LinearRegression().fit(X,y)
+p=m.predict(X)
+
+plt.scatter(X,y,s=10)
+plt.plot(X,p,'r')
+plt.title("Linear Regression")
+plt.show()
+
+print("Linear Regression - California Housing Dataset")
+print("Mean Squared Error:",mean_squared_error(y,p))
+print("R^2 Score:",r2_score(y,p))
+
+d=pd.read_csv(
+"https://archive.ics.uci.edu/ml/machine-learning-databases/auto-mpg/auto-mpg.data",
+sep=r'\s+',names=["mpg","c","disp","hp","wt","acc","yr","orig"],
+na_values="?").dropna()
+
+X,y=d[['disp']],d['mpg']
+X2=PolynomialFeatures(2).fit_transform(X)
+
+m=LinearRegression().fit(X2,y)
+p=m.predict(X2)
+
+plt.scatter(X,y,s=10)
+plt.scatter(X,p,s=10,c='r')
+plt.title("Polynomial Regression")
+plt.show()
+
+print("\nPolynomial Regression - Auto MPG Dataset")
+print("Mean Squared Error:",mean_squared_error(y,p))
+print("R^2 Score:",r2_score(y,p))
