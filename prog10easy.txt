@@ -1,0 +1,17 @@
+from sklearn.datasets import load_breast_cancer
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+from sklearn.metrics import *
+import matplotlib.pyplot as plt
+d = load_breast_cancer()
+x = StandardScaler().fit_transform(d.data)
+k = KMeans(n_clusters=2, random_state=42)
+y = k.fit_predict(x)
+print("Confusion Matrix:\n",confusion_matrix(d.target,y))
+print("\nClassification Report:\n",classification_report(d.target,y))
+p = PCA(2).fit_transform(x)
+plt.scatter(p[:,0],p[:,1],c=y)
+plt.scatter(*PCA(2).fit(x).transform(k.cluster_centers_).T,s=200,marker='X')
+plt.title("K-Means Clustering")
+plt.show()
